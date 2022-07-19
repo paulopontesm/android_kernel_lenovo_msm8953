@@ -775,8 +775,21 @@ ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/mach-msm/include/mach/msm_smsm.h),)
 CDEFINES += -DEXISTS_MSM_SMSM
 endif
 
-# Fix build for GCC 4.7
-EXTRA_CFLAGS += $(call cc-option,-Wno-maybe-uninitialized) -Wno-unused-function -Wno-unused-variable -Wno-enum-conversion -Wno-array-bounds -Wno-pointer-bool-conversion -Wno-parentheses-equality -Wno-typedef-redefinition -Wno-empty-body -Wno-non-literal-null-conversion
+# Disable certain flags for Clang as they are spammy and I'm not fixing them :^)
+# ifeq ($(cc-name),clang)
+EXTRA_CFLAGS += -Wno-shift-count-negative
+# EXTRA_CFLAGS += -Wno-enum-conversion
+# EXTRA_CFLAGS += -Wno-typedef-redefinition
+EXTRA_CFLAGS += -Wno-shift-count-overflow
+# EXTRA_CFLAGS += -Wno-non-literal-null-conversion
+EXTRA_CFLAGS += -Wno-logical-not-parentheses
+EXTRA_CFLAGS += -Wno-unused-function
+EXTRA_CFLAGS += -Wno-unused-variable
+EXTRA_CFLAGS += -Wno-array-bounds
+# EXTRA_CFLAGS += -Wno-pointer-bool-conversion
+# EXTRA_CFLAGS += -Wno-parentheses-equality
+EXTRA_CFLAGS += -Wno-empty-body
+# endif
 
 ifeq ($(CONFIG_WLAN_OFFLOAD_PACKETS),y)
 CDEFINES += -DWLAN_FEATURE_OFFLOAD_PACKETS
